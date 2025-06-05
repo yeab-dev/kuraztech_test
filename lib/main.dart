@@ -10,10 +10,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: SafeArea(child: Center(child: Home())),
-      ),
+    return MaterialApp(
+      title: 'Task Manager',
+      theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
+      home: const Home(),
     );
   }
 }

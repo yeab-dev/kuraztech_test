@@ -131,7 +131,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Task List')),
+      appBar: AppBar(title: const Text('Task List'), centerTitle: true),
       body: tasks.isEmpty
           ? const Center(child: Text('No tasks available. Add a new task!'))
           : ListView(
