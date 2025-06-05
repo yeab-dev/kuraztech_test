@@ -3,7 +3,13 @@ import 'package:kuraztech_test/models/task.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
-  const TaskCard({super.key, required this.task});
+  final VoidCallback onToggleCompleted;
+
+  const TaskCard({
+    super.key,
+    required this.task,
+    required this.onToggleCompleted,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +42,23 @@ class TaskCard extends StatelessWidget {
               style: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: Colors.black54),
+            ),
+            const SizedBox(height: 12.0),
+            Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton(
+                onPressed: onToggleCompleted,
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: task.completed ? Colors.red : Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                ),
+                child: Text(
+                  task.completed ? 'Mark Incomplete' : 'Mark Complete',
+                ),
+              ),
             ),
           ],
         ),
