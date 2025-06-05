@@ -4,4 +4,4 @@
     - got a gradle error trying my best -> time 02:10:53
     - the app successfully started running -> time 02:07:00
 - [x] create a task_card widget -> time 02:05:00
-- [x] 
+- [x] create a home page that has add and remove task functionalities

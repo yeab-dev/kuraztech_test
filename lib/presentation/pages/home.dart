@@ -12,7 +12,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // Define the tasks list as a state variable
   late List<Task> tasks;
 
   @override
@@ -52,25 +51,101 @@ class _HomeState extends State<Home> {
     ];
   }
 
+  void _addTask(String title, String description) {
+    setState(() {
+      tasks.add(
+        Task(
+          taskId: '${tasks.length + 1}',
+          taskTitle: title,
+          taskDescription: description,
+          completed: false,
+        ),
+      );
+    });
+  }
+
+  void _toggleTaskCompletion(int index) {
+    setState(() {
+      log(
+        'Before toggle - Task ${tasks[index].taskId}: ${tasks[index].completed}',
+      );
+      tasks[index] = tasks[index].toggleCompleted();
+      if (tasks[index].completed) {
+        tasks.removeAt(index);
+      }
+      log(
+        'After toggle - Task ${tasks[index].taskId}: ${tasks[index].completed}',
+      );
+    });
+  }
+
+  void _showAddTaskDialog() {
+    final titleController = TextEditingController();
+    final descriptionController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add New Task'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: titleController,
+              decoration: const InputDecoration(
+                labelText: 'Task Title',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+            TextField(
+              controller: descriptionController,
+              decoration: const InputDecoration(
+                labelText: 'Task Description',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (titleController.text.isNotEmpty &&
+                  descriptionController.text.isNotEmpty) {
+                _addTask(titleController.text, descriptionController.text);
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Add Task'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: List.generate(tasks.length, (index) {
-        return TaskCard(
-          task: tasks[index],
-          onToggleCompleted: () {
-            log(
-              'Before toggle - Task ${tasks[index].taskId}: ${tasks[index].completed}',
-            );
-            setState(() {
-              tasks[index] = tasks[index].toggleCompleted();
-            });
-            log(
-              'After toggle - Task ${tasks[index].taskId}: ${tasks[index].completed}',
-            );
-          },
-        );
-      }),
+    return Scaffold(
+      appBar: AppBar(title: const Text('Task List')),
+      body: tasks.isEmpty
+          ? const Center(child: Text('No tasks available. Add a new task!'))
+          : ListView(
+              children: List.generate(tasks.length, (index) {
+                return TaskCard(
+                  task: tasks[index],
+                  onToggleCompleted: () => _toggleTaskCompletion(index),
+                );
+              }),
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddTaskDialog,
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
