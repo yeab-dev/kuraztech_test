@@ -1,3 +1,4 @@
 - [x] create a fluttter app and make an initial commit
 - [x] create a task model and commit
 - [ ] runing the app for test -> started at 02:38:00
+    - got a gradle error trying my best -> time 02:10:53
